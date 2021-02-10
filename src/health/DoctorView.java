@@ -33,7 +33,7 @@ public final class DoctorView extends javax.swing.JFrame {
     try {
       Class.forName("org.sqlite.JDBC");
       conn = DriverManager.getConnection(
-          "jdbc:sqlite:D:/Users/Jerry/Downloads/sqlite-tools-win32-x86-3340100/sqlite-tools-win32-x86-3340100/health");
+          "jdbc:sqlite:./src/res/health");
 //JOptionPane.showMessageDialog (null, "Connected");
       Statement statement = conn.createStatement();
     } catch (ClassNotFoundException | SQLException e) {
