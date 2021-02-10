@@ -30,7 +30,11 @@ public class NewJFrame extends javax.swing.JFrame {
     try {
       Class.forName("org.sqlite.JDBC");
       conn = DriverManager.getConnection(
-          "jdbc:sqlite:D:/Users/Jerry/Downloads/sqlite-tools-win32-x86-3340100/sqlite-tools-win32-x86-3340100/health");
+          "jdbc:sqlite:/Users/benjamindeleuze/Desktop/Software Quality Assurance/HealthConnect/src/res/health");
+      /*
+      Ben: jdbc:sqlite:/Users/benjamindeleuze/Desktop/Software Quality Assurance/HealthConnect/src/res/health
+      Jerry: jdbc:sqlite:D:/Users/Jerry/Downloads/sqlite-tools-win32-x86-3340100/sqlite-tools-win32-x86-3340100/health
+       */
       //JOptionPane.showMessageDialog (null, "Connected");
       Statement statement = conn.createStatement();
     } catch (ClassNotFoundException | SQLException e) {
@@ -263,7 +267,7 @@ public class NewJFrame extends javax.swing.JFrame {
       java.util.logging.Logger.getLogger(NewJFrame.class.getName())
           .log(java.util.logging.Level.SEVERE, null, ex);
     } //</editor-fold>
-    
+
     /* Create and display the form */
     java.awt.EventQueue.invokeLater(new Runnable() {
       @Override
