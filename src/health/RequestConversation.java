@@ -40,7 +40,7 @@ public class RequestConversation extends javax.swing.JFrame {
     try {
       Class.forName("org.sqlite.JDBC");
       conn = DriverManager.getConnection(
-          "jdbc:sqlite:D:/Users/Jerry/Downloads/sqlite-tools-win32-x86-3340100/sqlite-tools-win32-x86-3340100/health");
+          "jdbc:sqlite:src/res/health");
       /*
       Ben: jdbc:sqlite:/Users/benjamindeleuze/Desktop/Software Quality Assurance/HealthConnect/src/res/health
       Jerry: jdbc:sqlite:D:/Users/Jerry/Downloads/sqlite-tools-win32-x86-3340100/sqlite-tools-win32-x86-3340100/health
