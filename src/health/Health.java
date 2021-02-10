@@ -15,13 +15,13 @@ public class Health {
   public static void main(String[] args) { // TODO code application logic here
     @SuppressWarnings("UnusedAssignment") //test connection
         Connection conn = null;
+    Statement statement = null;
 
     try {
       Class.forName("org.sqlite.JDBC");
       conn = DriverManager.getConnection(
           "jdbc:sqlite:C:\\Users\\Andrea\\Documents\\NetBeansProjects\\healt h.sqlite");
-//JOptionPane.showMessageDialog (null, "Connected");
-      Statement statement = conn.createStatement();
+//JOptionPane.showMessageDialog (null, "Connected"); Statement statement = conn.createStatement();
       ResultSet hc = statement.executeQuery("select * from Patient");
       while (hc.next()) {
         System.out.println("Username = " + hc.getString("Username"));
