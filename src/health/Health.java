@@ -20,10 +20,6 @@ public class Health {
       Class.forName("org.sqlite.JDBC");
       conn = DriverManager.getConnection(
           "jdbc:sqlite:src/res/health");
-      /*
-      Ben: jdbc:sqlite:/Users/benjamindeleuze/Desktop/Software Quality Assurance/HealthConnect/src/res/health
-      Jerry: jdbc:sqlite:D:/Users/Jerry/Downloads/sqlite-tools-win32-x86-3340100/sqlite-tools-win32-x86-3340100/health
-       */
 //JOptionPane.showMessageDialog (null, "Connected");
       Statement statement = conn.createStatement();
       ResultSet hc = statement.executeQuery("select * from Patient");
