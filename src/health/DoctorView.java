@@ -255,7 +255,7 @@ public final class DoctorView extends javax.swing.JFrame {
     String element;
     String sql = "select * from Request where Status=?";
     model.removeAllElements();
-    element = "RID Date Patient Username";
+    element = "RID        Date                                        Patient Username";
     model.addElement(element);
     try {
       pst = conn.prepareStatement(sql);
@@ -292,9 +292,9 @@ public final class DoctorView extends javax.swing.JFrame {
     viewedRequests.setText("In Progress Requests");
     requestsList.setVisible(true);
     String element;
-    String sql = "select distinct Request.RID, Date, PUsername from Request, Message where Request.RID = Message.RID and Request.Status=? and Message.DUsername=?";
+   String sql = "select distinct Request.RID, Date, PUsername from Request, Message where Request.RID = Message.RID and Request.Status=? and Message.DUsername=?";
     model.removeAllElements();
-    element = "RID Date Patient Username";
+    element = "RID        Date                                        Patient Username";
     model.addElement(element);
     try {
       pst = conn.prepareStatement(sql);
@@ -355,7 +355,7 @@ public final class DoctorView extends javax.swing.JFrame {
     String element;
     String sql = "select Distinct Request.RID, Date, PUsername from Request, Message where Request.RID = Message.RID and Request.Status=? and Message.DUsername=?";
     model.removeAllElements();
-    element = "RID Date Patient Username";
+    element = "RID        Date                                        Patient Username";
     model.addElement(element);
     try {
       pst = conn.prepareStatement(sql);
