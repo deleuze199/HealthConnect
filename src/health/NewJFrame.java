@@ -28,9 +28,9 @@ public class NewJFrame extends javax.swing.JFrame {
   public NewJFrame() {
     initComponents();
     try {
-      Class.forName("org.sqlite.JDBC");
+      Class.forName("com.mysql.cj.jdbc.Driver");
       conn = DriverManager.getConnection(
-          "jdbc:sqlite:./src/res/health");
+          "jdbc:mysql://localhost:3306/health", "root", "root");
       //JOptionPane.showMessageDialog (null, "Connected");
       Statement statement = conn.createStatement();
     } catch (ClassNotFoundException | SQLException e) {

@@ -13,11 +13,10 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="library" exported="" name="jdbc-api-1.4" level="project" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" exported="" name="mysql-connector-java-8.0.23" level="project" />
-    <orderEntry type="module-library">
+    <orderEntry type="module-library" exported="">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/src/res/Modules/sqlite-jdbc-3.34.0.jar!/" />
+          <root url="jar://$USER_HOME$/Downloads/jar_files (mySQL)/mysql-connector-java-8.0.23.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
