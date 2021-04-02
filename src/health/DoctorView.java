@@ -329,6 +329,7 @@ public final class DoctorView extends javax.swing.JFrame {
 
   private void openSelectedButtonActionPerformed(
       java.awt.event.ActionEvent evt) { // TODO add your handling code here:
+
     if (requestsList.getSelectedIndex() != -1) {
       String temp_requestID = requestsList.getSelectedValue().toString();
       temp_requestID = temp_requestID.substring(0, 3);
@@ -400,6 +401,7 @@ public final class DoctorView extends javax.swing.JFrame {
   private void logoutActionPerformed(
       java.awt.event.ActionEvent evt) { // TODO add your handling code here:
     try {
+      //rs.close();
       rs.close();
       pst.close();
     } catch (SQLException e) {

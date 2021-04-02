@@ -10,6 +10,20 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\src\Test\DoctorViewTest.java">
+          <value>
+            <Attribute>
+              <option name="separator" value=";" />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\src\Test\HealthTest.java">
+          <value>
+            <Attribute>
+              <option name="separator" value=";" />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\src\health\DoctorView.java">
           <value>
             <Attribute>
@@ -17,7 +31,21 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\src\health\Health.java">
+          <value>
+            <Attribute>
+              <option name="separator" value=";" />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\src\health\PatientView.java">
+          <value>
+            <Attribute>
+              <option name="separator" value=";" />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\src\health\RequestConversation.java">
           <value>
             <Attribute>
               <option name="separator" value=";" />
