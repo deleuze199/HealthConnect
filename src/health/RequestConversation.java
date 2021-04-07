@@ -17,7 +17,6 @@ import java.util.Date;
 import javax.swing.JOptionPane;
 
 public class RequestConversation extends javax.swing.JFrame {
-
   int requestNumber;
   String userID;
   String userType;
@@ -38,9 +37,9 @@ public class RequestConversation extends javax.swing.JFrame {
     userID = new_userID;
     userType = new_userType;
     try {
-      Class.forName("org.sqlite.JDBC");
+      Class.forName("com.mysql.cj.jdbc.Driver");
       conn = DriverManager.getConnection(
-          "jdbc:sqlite:src/res/health");
+          "jdbc:mysql://localhost:3306/health", "root", "root");
 //JOptionPane.showMessageDialog (null, "Connected");
       Statement statement = conn.createStatement();
     } catch (ClassNotFoundException | SQLException e) {
@@ -74,7 +73,7 @@ public class RequestConversation extends javax.swing.JFrame {
         sql = "update Message set DUsername=? where RID =?";
         pst = conn.prepareStatement(sql);
         pst.setString(1, userID);
-        pst.setString(2, temp);
+        pst.setString(2,temp);
         pst.execute();
       }
     } catch (HeadlessException | SQLException e) {
@@ -93,6 +92,7 @@ public class RequestConversation extends javax.swing.JFrame {
       String temp = Integer.toString(requestNumber);
       pst.setString(1, temp);
       rs = pst.executeQuery();
+      rs.next();
       if ("Closed".equals(rs.getString("Status"))) {
         closeButton.setEnabled(false);
         addButton.setEnabled(false);
@@ -127,6 +127,7 @@ public class RequestConversation extends javax.swing.JFrame {
     jLabel1 = new javax.swing.JLabel();
 
     setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+    currentRequest.setEditable(false);
     currentRequest.setColumns(20);
     currentRequest.setRows(5);
     jScrollPane1.setViewportView(currentRequest);

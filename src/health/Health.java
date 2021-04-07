@@ -15,14 +15,15 @@ public class Health {
   public static void main(String[] args) { // TODO code application logic here
     @SuppressWarnings("UnusedAssignment") //test connection
         Connection conn = null;
+    //Statement statement = null;
 
     try {
-      Class.forName("org.sqlite.JDBC");
+      Class.forName("com.mysql.cj.jdbc.Driver");
       conn = DriverManager.getConnection(
-          "jdbc:sqlite:src/res/health");
+          "jdbc:mysql://localhost:3306/health", "root", "root");
 //JOptionPane.showMessageDialog (null, "Connected");
       Statement statement = conn.createStatement();
-      ResultSet hc = statement.executeQuery("select * from Patient");
+/*      ResultSet hc = statement.executeQuery("select * from Patient");
       while (hc.next()) {
         System.out.println("Username = " + hc.getString("Username"));
         System.out.println("Password = " + hc.getString("Password"));
@@ -31,7 +32,7 @@ public class Health {
       while (hc.next()) {
         System.out.println("Username = " + hc.getString("Username"));
         System.out.println("Password = " + hc.getString("Password"));
-      }
+      }*/
 //open login page
       NewJFrame s = new NewJFrame();
       s.setVisible(true);

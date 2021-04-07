@@ -28,9 +28,9 @@ public class NewJFrame extends javax.swing.JFrame {
   public NewJFrame() {
     initComponents();
     try {
-      Class.forName("org.sqlite.JDBC");
+      Class.forName("com.mysql.cj.jdbc.Driver");
       conn = DriverManager.getConnection(
-          "jdbc:sqlite:src/res/health");
+          "jdbc:mysql://localhost:3306/health", "root", "root");
       //JOptionPane.showMessageDialog (null, "Connected");
       Statement statement = conn.createStatement();
     } catch (ClassNotFoundException | SQLException e) {
@@ -246,7 +246,6 @@ public class NewJFrame extends javax.swing.JFrame {
    */
   public static void main(String args[]) {
     /* Set the Nimbus look and feel */
-
 //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
     /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
      * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
@@ -263,7 +262,6 @@ public class NewJFrame extends javax.swing.JFrame {
       java.util.logging.Logger.getLogger(NewJFrame.class.getName())
           .log(java.util.logging.Level.SEVERE, null, ex);
     } //</editor-fold>
-
     /* Create and display the form */
     java.awt.EventQueue.invokeLater(new Runnable() {
       @Override

@@ -32,9 +32,9 @@ public class NewRequests extends javax.swing.JFrame {
     initComponents();
     userID = new_userID;
     try {
-      Class.forName("org.sqlite.JDBC");
+      Class.forName("com.mysql.cj.jdbc.Driver");
       conn = DriverManager.getConnection(
-          "jdbc:sqlite:src/res/health");
+          "jdbc:mysql://localhost:3306/health", "root", "root");
 //JOptionPane.showMessageDialog (null, "Connected");
       Statement statement = conn.createStatement();
       String sql = "select RID from Request";
@@ -242,8 +242,7 @@ public class NewRequests extends javax.swing.JFrame {
     }
 //</editor-fold>
     NewJFrame n = new NewJFrame();
-    final PatientView v = new PatientView(n.getUsername());
-    /* Create and display the form */
+    final PatientView v = new PatientView(n.getUsername()); /* Create and display the form */
     java.awt.EventQueue.invokeLater(new Runnable() {
       @Override
       public void run() {

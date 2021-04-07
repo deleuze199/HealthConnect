@@ -31,9 +31,9 @@ public final class DoctorView extends javax.swing.JFrame {
   public DoctorView(String doctor) {
     initComponents();
     try {
-      Class.forName("org.sqlite.JDBC");
+      Class.forName("com.mysql.cj.jdbc.Driver");
       conn = DriverManager.getConnection(
-          "jdbc:sqlite:src/res/health");
+          "jdbc:mysql://localhost:3306/health", "root", "root");
 //JOptionPane.showMessageDialog (null, "Connected");
       Statement statement = conn.createStatement();
     } catch (ClassNotFoundException | SQLException e) {
@@ -255,7 +255,7 @@ public final class DoctorView extends javax.swing.JFrame {
     String element;
     String sql = "select * from Request where Status=?";
     model.removeAllElements();
-    element = "RID Date Patient Username";
+    element = "RID        Date                                 Patient Username";
     model.addElement(element);
     try {
       pst = conn.prepareStatement(sql);
@@ -267,7 +267,7 @@ public final class DoctorView extends javax.swing.JFrame {
             rs.getString("RID") + " " + rs.getString("Date") + " " + rs.getString("PUsername");
         model.addElement(element);
         while (rs.next()) {
-          element = rs.getString("RID") + "  " + rs.getString("Date") + rs.getString(" PUsername ");
+          element = rs.getString("RID") + "  " + rs.getString("Date") + rs.getString("PUsername");
           model.addElement(element);
         }
         requestsList.setModel(model);
@@ -292,9 +292,9 @@ public final class DoctorView extends javax.swing.JFrame {
     viewedRequests.setText("In Progress Requests");
     requestsList.setVisible(true);
     String element;
-    String sql = "select distinct Request.RID, Date, PUsername from Request, Message where Request.RID = Message.RID and Request.Status=? and Message.DUsername=?";
+    String sql = "select distinct Request.RID, Date, PUsername from health.Request, health.Message where Request.RID = Message.RID and Request.Status=? and Message.DUsername=?";
     model.removeAllElements();
-    element = "RID Date Patient Username";
+    element = "RID        Date                                        Patient Username";
     model.addElement(element);
     try {
       pst = conn.prepareStatement(sql);
@@ -329,6 +329,7 @@ public final class DoctorView extends javax.swing.JFrame {
 
   private void openSelectedButtonActionPerformed(
       java.awt.event.ActionEvent evt) { // TODO add your handling code here:
+
     if (requestsList.getSelectedIndex() != -1) {
       String temp_requestID = requestsList.getSelectedValue().toString();
       temp_requestID = temp_requestID.substring(0, 3);
@@ -355,7 +356,7 @@ public final class DoctorView extends javax.swing.JFrame {
     String element;
     String sql = "select Distinct Request.RID, Date, PUsername from Request, Message where Request.RID = Message.RID and Request.Status=? and Message.DUsername=?";
     model.removeAllElements();
-    element = "RID Date Patient Username";
+    element = "RID        Date                                        Patient Username";
     model.addElement(element);
     try {
       pst = conn.prepareStatement(sql);
@@ -400,6 +401,7 @@ public final class DoctorView extends javax.swing.JFrame {
   private void logoutActionPerformed(
       java.awt.event.ActionEvent evt) { // TODO add your handling code here:
     try {
+      //rs.close();
       rs.close();
       pst.close();
     } catch (SQLException e) {

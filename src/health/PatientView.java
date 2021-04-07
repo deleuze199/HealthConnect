@@ -24,16 +24,16 @@ public final class PatientView extends javax.swing.JFrame {
   DefaultListModel model = new DefaultListModel();
   int index;
   int requestID;
-
+  boolean isClosed = false;
   /**
    * Creates new form PatientView * @param patient
    */
   public PatientView(String patient) {
     initComponents();
     try {
-      Class.forName("org.sqlite.JDBC");
+      Class.forName("com.mysql.cj.jdbc.Driver");
       conn = DriverManager.getConnection(
-          "jdbc:sqlite:src/res/health");
+          "jdbc:mysql://localhost:3306/health", "root", "root");
 //JOptionPane.showMessageDialog (null, "Connected");
       Statement statement = conn.createStatement();
     } catch (ClassNotFoundException | SQLException e) {
@@ -257,6 +257,7 @@ public final class PatientView extends javax.swing.JFrame {
       java.awt.event.ActionEvent evt) throws SQLException { // TODO add your handling code here:
     jLabel1.setText("Your New Requests");
     jList1.setVisible(true);
+    isClosed = false;
     String element;
     String sql = "select RID,Date from Request where Status=? and PUsername=?";
     model.removeAllElements();
@@ -295,6 +296,7 @@ public final class PatientView extends javax.swing.JFrame {
       java.awt.event.ActionEvent evt) { // TODO add your handling code here:
     jLabel1.setText("Your Closed Requests");
     jList1.setVisible(true);
+    isClosed = true;
     String element;
     String sql = "select RID,Date from Request where Status=? and PUsername=?";
     model.removeAllElements();
@@ -343,9 +345,15 @@ public final class PatientView extends javax.swing.JFrame {
       temp_requestID = temp_requestID.substring(0, 3);
       requestID = Integer.parseInt(temp_requestID);
       setRequestID(requestID);
-      RequestConversation r = new RequestConversation(requestID, username, userType);
-      dispose();
-      r.setVisible(true);
+      if(isClosed){
+        RequestClosedConversation r = new RequestClosedConversation(requestID, username, userType);
+        dispose();
+        r.setVisible(true);
+      } else {
+        RequestConversation r = new RequestConversation(requestID, username, userType);
+        dispose();
+        r.setVisible(true);
+      }
     } else {
       JOptionPane.showMessageDialog(null, "Please select a request");
     }
