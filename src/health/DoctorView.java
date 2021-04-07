@@ -94,10 +94,15 @@ public final class DoctorView extends javax.swing.JFrame {
 
     setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
     requestsList.setModel(new javax.swing.AbstractListModel() {
-      String[] strings = {"Item 1", "Item 2", "Item 3", "Item 4", "Item 5"};
+      String[] strings;
+      // String[] strings = {"Item 1", "Item 2", "Item 3", "Item 4", "Item 5"};
 
       public int getSize() {
-        return strings.length;
+        if (strings != null) {
+          return strings.length;
+        } else {
+          return 0;
+        }
       }
 
       public Object getElementAt(int i) {
@@ -343,6 +348,7 @@ public final class DoctorView extends javax.swing.JFrame {
       } catch (SQLException e) {
         JOptionPane.showMessageDialog(null, e);
       }
+      //May need to check if conversation is closed
       RequestConversation r = new RequestConversation(requestID, username, userType);
       dispose();
       r.setVisible(true);
