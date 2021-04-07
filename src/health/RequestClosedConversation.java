@@ -16,7 +16,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.swing.JOptionPane;
 
-public class RequestConversation extends javax.swing.JFrame {
+public class RequestClosedConversation extends javax.swing.JFrame {
   int requestNumber;
   String userID;
   String userType;
@@ -31,7 +31,7 @@ public class RequestConversation extends javax.swing.JFrame {
    * @param new_userID
    * @param new_userType
    */
-  public RequestConversation(int new_requestID, String new_userID, String new_userType) {
+  public RequestClosedConversation(int new_requestID, String new_userID, String new_userType) {
     initComponents();
     requestNumber = new_requestID;
     userID = new_userID;
@@ -39,7 +39,7 @@ public class RequestConversation extends javax.swing.JFrame {
     try {
       Class.forName("com.mysql.cj.jdbc.Driver");
       conn = DriverManager.getConnection(
-          "jdbc:mysql://localhost:3306/health", "root", "root");
+          "jdbc:mysql://localhost:3306/health", "root", "");
 //JOptionPane.showMessageDialog (null, "Connected");
       Statement statement = conn.createStatement();
     } catch (ClassNotFoundException | SQLException e) {
@@ -48,7 +48,8 @@ public class RequestConversation extends javax.swing.JFrame {
     String sql = "select * from Message where RID=?";
     try {
       pst = conn.prepareStatement(sql);
-      String temp = Integer.toString(requestNumber);
+      String temp;
+      temp = Integer.toString(requestNumber);
       pst.setString(1, temp);
       rs = pst.executeQuery();
       currentRequest.setLineWrap(true);
@@ -91,10 +92,6 @@ public class RequestConversation extends javax.swing.JFrame {
       String temp = Integer.toString(requestNumber);
       pst.setString(1, temp);
       rs = pst.executeQuery();
-      if ("Closed".equals(rs.getString("Status"))) {
-        closeButton.setEnabled(false);
-        addButton.setEnabled(false);
-      }
     } catch (SQLException e) {
       JOptionPane.showMessageDialog(null, e);
     } finally {
@@ -118,8 +115,6 @@ public class RequestConversation extends javax.swing.JFrame {
     currentRequest = new javax.swing.JTextArea();
     jScrollPane2 = new javax.swing.JScrollPane();
     addToRequest = new javax.swing.JTextArea();
-    addButton = new javax.swing.JButton();
-    closeButton = new javax.swing.JButton();
     backButton = new javax.swing.JButton();
     jLabel7 = new javax.swing.JLabel();
     jLabel1 = new javax.swing.JLabel();
@@ -129,21 +124,11 @@ public class RequestConversation extends javax.swing.JFrame {
     currentRequest.setColumns(20);
     currentRequest.setRows(5);
     jScrollPane1.setViewportView(currentRequest);
+    addToRequest.setEditable(false);
     addToRequest.setColumns(20);
     addToRequest.setRows(5);
     jScrollPane2.setViewportView(addToRequest);
-    addButton.setText("Add to Request");
-    addButton.addActionListener(new java.awt.event.ActionListener() {
-      public void actionPerformed(java.awt.event.ActionEvent evt) {
-        addButtonActionPerformed(evt);
-      }
-    });
-    closeButton.setText("Close Request");
-    closeButton.addActionListener(new java.awt.event.ActionListener() {
-      public void actionPerformed(java.awt.event.ActionEvent evt) {
-        closeButtonActionPerformed(evt);
-      }
-    });
+
     backButton.setText("Back");
     backButton.addActionListener(new java.awt.event.ActionListener() {
       public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -182,14 +167,6 @@ public class RequestConversation extends javax.swing.JFrame {
                         addGroup(layout.createParallelGroup(
                             javax.swing.GroupLayout.Alignment.LEADING).
                             addGroup(layout.createSequentialGroup().
-                                addComponent(addButton,
-                                    javax.swing.GroupLayout.PREFERRED_SIZE, 124,
-                                    javax.swing.GroupLayout.PREFERRED_SIZE).
-                                addGap(31, 31, 31).
-                                addComponent(closeButton,
-                                    javax.swing.GroupLayout.PREFERRED_SIZE, 116,
-                                    javax.swing.GroupLayout.PREFERRED_SIZE).
-                                addGap(30, 30, 30).
                                 addComponent(backButton,
                                     javax.swing.GroupLayout.PREFERRED_SIZE, 83,
                                     javax.swing.GroupLayout.PREFERRED_SIZE)).
@@ -220,11 +197,6 @@ public class RequestConversation extends javax.swing.JFrame {
                                 addGap(18, 18, 18).
                                 addGroup(layout.createParallelGroup(
                                     javax.swing.GroupLayout.Alignment.BASELINE).
-                                    addComponent(closeButton).
-                                    addComponent(addButton,
-                                        javax.swing.GroupLayout.DEFAULT_SIZE,
-                                        javax.swing.GroupLayout.DEFAULT_SIZE,
-                                        Short.MAX_VALUE).
                                     addComponent(backButton)).
                                 addGap(6, 6, 6)).
                         addComponent(jScrollPane1,
@@ -235,93 +207,7 @@ public class RequestConversation extends javax.swing.JFrame {
 
   }// </editor-fold>
 
-  private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {
-// TODO add your handling code here:
-    int pane = JOptionPane
-        .showConfirmDialog(null, "Are you sure you want to add your message to the request ? ",
-            " Add To Request", JOptionPane.YES_NO_OPTION);
-    if (pane == 0) {
-      String sql = "insert into Message (RID, DUsername, TimeStamp, Message) values (?, ?, ?, ?)";
-      try {
-        pst = conn.prepareStatement(sql);
-        String temp = Integer.toString(requestNumber);
-        pst.setString(1, temp);
-        pst.setString(2, userID);
-        Date date = new Date();
-        String timestamp = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(date);
-        pst.setString(3, timestamp);
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("\n");
-        stringBuilder.append(addToRequest.getText());
-        stringBuilder.append("\n Added by ").append(userType).append(" ").append(userID);
-        String finalString = stringBuilder.toString();
-        pst.setString(4, finalString);
-        pst.execute();
-        JOptionPane.showMessageDialog(null, "Message added");
-        sql = "update Request set Status='In Progress' where RID =?";
-        pst = conn.prepareStatement(sql);
-        temp = Integer.toString(requestNumber);
-        pst.setString(1, temp);
-        pst.execute();
-        currentRequest.append("\n");
-        currentRequest.append(timestamp);
-        currentRequest.append("\n");
-        currentRequest.append(finalString);
-        addToRequest.setText("");
-        sql = "update Message set DUsername=? where RID =?";
-        pst = conn.prepareStatement(sql);
-        pst.setString(1, userID);
-        pst.setString(2, temp);
-        pst.execute();
-      } catch (SQLException | HeadlessException e) {
-        JOptionPane.showMessageDialog(null, e);
-      } finally {
-        try {
-          rs.close();
-          pst.close();
-        } catch (SQLException e) {
-          JOptionPane.showMessageDialog(null, e);
-        }
-      }
-    }
 
-  }
-
-  private void closeButtonActionPerformed(java.awt.event.ActionEvent evt) {
-// TODO add your handling code here:
-    int pane = JOptionPane.showConfirmDialog(null, "Are you sure you want to close the request?",
-        "Close Request", JOptionPane.YES_NO_OPTION);
-    if (pane == 0) {
-      String sql = "update Request set Status='Closed' where RID =?";
-      try {
-        pst = conn.prepareStatement(sql);
-        String temp = Integer.toString(requestNumber);
-        pst.setString(1, temp);
-        pst.execute();
-        JOptionPane.showMessageDialog(null, "Request has been closed.");
-      } catch (SQLException | HeadlessException e) {
-        JOptionPane.showMessageDialog(null, e);
-      } finally {
-        try {
-          rs.close();
-          pst.close();
-        } catch (SQLException e) {
-          JOptionPane.showMessageDialog(null, e);
-        }
-      }
-      if ("Doctor".equals(userType)) {
-        NewJFrame n = new NewJFrame();
-        DoctorView d = new DoctorView(userID);
-        d.setVisible(true);
-        dispose();
-      } else {
-        NewJFrame n = new NewJFrame();
-        PatientView p = new PatientView(userID);
-        p.setVisible(true);
-        dispose();
-      }
-    }
-  }
 
   private void backButtonActionPerformed(
       java.awt.event.ActionEvent evt) { // TODO add your handling code here:
@@ -362,7 +248,7 @@ public class RequestConversation extends javax.swing.JFrame {
         }
       }
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
-      java.util.logging.Logger.getLogger(RequestConversation.class.getName())
+      java.util.logging.Logger.getLogger(RequestClosedConversation.class.getName())
           .log(java.util.logging.Level.SEVERE, null, ex);
     }
 //</editor-fold>
@@ -372,7 +258,7 @@ public class RequestConversation extends javax.swing.JFrame {
     java.awt.EventQueue.invokeLater(new Runnable() {
       @Override
       public void run() {
-        new RequestConversation(d.getRequestID(), d.getUsername(), d.getUserType())
+        new RequestClosedConversation(d.getRequestID(), d.getUsername(), d.getUserType())
             .setVisible(true);
       }
     });
