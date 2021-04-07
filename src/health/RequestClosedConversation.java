@@ -28,8 +28,8 @@ public class RequestClosedConversation extends javax.swing.JFrame {
   /**
    * Creates new form RequestConversation * @param new_requestID
    *
-   * @param new_userID
-   * @param new_userType
+   * @param new_userID is the username of person opening request
+   * @param new_userType Doctor or Patient
    */
   public RequestClosedConversation(int new_requestID, String new_userID, String new_userType) {
     initComponents();
@@ -39,7 +39,7 @@ public class RequestClosedConversation extends javax.swing.JFrame {
     try {
       Class.forName("com.mysql.cj.jdbc.Driver");
       conn = DriverManager.getConnection(
-          "jdbc:mysql://localhost:3306/health", "root", "");
+          "jdbc:mysql://localhost:3306/health", "root", "root");
 //JOptionPane.showMessageDialog (null, "Connected");
       Statement statement = conn.createStatement();
     } catch (ClassNotFoundException | SQLException e) {
@@ -81,8 +81,10 @@ public class RequestClosedConversation extends javax.swing.JFrame {
       JOptionPane.showMessageDialog(null, e);
     } finally {
       try {
-        rs.close();
-        pst.close();
+        if (rs != null) {
+          rs.close();
+          pst.close();
+        }
       } catch (SQLException e) {
         JOptionPane.showMessageDialog(null, e);
       }
@@ -98,8 +100,10 @@ public class RequestClosedConversation extends javax.swing.JFrame {
       JOptionPane.showMessageDialog(null, e);
     } finally {
       try {
-        rs.close();
-        pst.close();
+        if (rs != null) {
+          rs.close();
+          pst.close();
+        }
       } catch (SQLException e) {
         JOptionPane.showMessageDialog(null, e);
       }

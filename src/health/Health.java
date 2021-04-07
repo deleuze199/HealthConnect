@@ -22,7 +22,7 @@ public class Health {
       conn = DriverManager.getConnection(
           "jdbc:mysql://localhost:3306/health", "root", "root");
 //JOptionPane.showMessageDialog (null, "Connected");
-      Statement statement = conn.createStatement();
+//      Statement statement = conn.createStatement();
 /*      ResultSet hc = statement.executeQuery("select * from Patient");
       while (hc.next()) {
         System.out.println("Username = " + hc.getString("Username"));
@@ -38,6 +38,7 @@ public class Health {
       s.setVisible(true);
     } catch (ClassNotFoundException | SQLException e) {
       JOptionPane.showMessageDialog(null, e);
+      System.out.println(e);
     }
   }
 }
