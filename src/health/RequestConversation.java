@@ -39,7 +39,7 @@ public class RequestConversation extends javax.swing.JFrame {
     try {
       Class.forName("com.mysql.cj.jdbc.Driver");
       conn = DriverManager.getConnection(
-          "jdbc:mysql://localhost:3306/health", "root", "");
+          "jdbc:mysql://localhost:3306/health", "root", "root");
 //JOptionPane.showMessageDialog (null, "Connected");
       Statement statement = conn.createStatement();
     } catch (ClassNotFoundException | SQLException e) {
@@ -73,6 +73,7 @@ public class RequestConversation extends javax.swing.JFrame {
         sql = "update Message set DUsername=? where RID =?";
         pst = conn.prepareStatement(sql);
         pst.setString(1, userID);
+        pst.setString(2,temp);
         pst.execute();
       }
     } catch (HeadlessException | SQLException e) {
@@ -91,6 +92,7 @@ public class RequestConversation extends javax.swing.JFrame {
       String temp = Integer.toString(requestNumber);
       pst.setString(1, temp);
       rs = pst.executeQuery();
+      rs.next();
       if ("Closed".equals(rs.getString("Status"))) {
         closeButton.setEnabled(false);
         addButton.setEnabled(false);

@@ -74,6 +74,7 @@ public class RequestClosedConversation extends javax.swing.JFrame {
         sql = "update Message set DUsername=? where RID =?";
         pst = conn.prepareStatement(sql);
         pst.setString(1, userID);
+        pst.setString(2,temp);
         pst.execute();
       }
     } catch (HeadlessException | SQLException e) {
@@ -92,6 +93,7 @@ public class RequestClosedConversation extends javax.swing.JFrame {
       String temp = Integer.toString(requestNumber);
       pst.setString(1, temp);
       rs = pst.executeQuery();
+      rs.next();
     } catch (SQLException e) {
       JOptionPane.showMessageDialog(null, e);
     } finally {
