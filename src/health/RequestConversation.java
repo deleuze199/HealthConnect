@@ -39,7 +39,7 @@ public class RequestConversation extends javax.swing.JFrame {
     try {
       Class.forName("com.mysql.cj.jdbc.Driver");
       conn = DriverManager.getConnection(
-          "jdbc:mysql://localhost:3306/health", "root", "root");
+          "jdbc:mysql://localhost:3306/health", "root", "");
 //JOptionPane.showMessageDialog (null, "Connected");
       Statement statement = conn.createStatement();
     } catch (ClassNotFoundException | SQLException e) {

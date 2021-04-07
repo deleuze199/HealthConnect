@@ -23,7 +23,7 @@ public class Health {
           "jdbc:mysql://localhost:3306/health", "root", "root");
 //JOptionPane.showMessageDialog (null, "Connected");
       Statement statement = conn.createStatement();
-      ResultSet hc = statement.executeQuery("select * from Patient");
+/*      ResultSet hc = statement.executeQuery("select * from Patient");
       while (hc.next()) {
         System.out.println("Username = " + hc.getString("Username"));
         System.out.println("Password = " + hc.getString("Password"));
@@ -32,7 +32,7 @@ public class Health {
       while (hc.next()) {
         System.out.println("Username = " + hc.getString("Username"));
         System.out.println("Password = " + hc.getString("Password"));
-      }
+      }*/
 //open login page
       NewJFrame s = new NewJFrame();
       s.setVisible(true);
