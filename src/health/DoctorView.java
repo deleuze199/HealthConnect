@@ -24,6 +24,7 @@ public final class DoctorView extends javax.swing.JFrame {
   DefaultListModel model = new DefaultListModel();
   int index;
   int requestID;
+  boolean isClosed = false;
 
   /**
    * Creates new form DoctorView * @param doctor
@@ -257,6 +258,7 @@ public final class DoctorView extends javax.swing.JFrame {
       java.awt.event.ActionEvent evt) { // TODO add your handling code here:
     viewedRequests.setText("New Requests");
     requestsList.setVisible(true);
+    isClosed = false;
     String element;
     String sql = "select * from Request where Status=?";
     model.removeAllElements();
@@ -296,6 +298,7 @@ public final class DoctorView extends javax.swing.JFrame {
       java.awt.event.ActionEvent evt) { // TODO add your handling code here:
     viewedRequests.setText("In Progress Requests");
     requestsList.setVisible(true);
+    isClosed = false;
     String element;
     String sql = "select distinct Request.RID, Date, PUsername from health.Request, health.Message where Request.Status=? and Message.DUsername=?";
     // previous sql creating error for doctor not seeing ticket closed by patient
@@ -348,10 +351,15 @@ public final class DoctorView extends javax.swing.JFrame {
       } catch (SQLException e) {
         JOptionPane.showMessageDialog(null, e);
       }
-      //May need to check if conversation is closed
-      RequestConversation r = new RequestConversation(requestID, username, userType);
-      dispose();
-      r.setVisible(true);
+      if(isClosed){
+        RequestClosedConversation r = new RequestClosedConversation(requestID, username, userType);
+        dispose();
+        r.setVisible(true);
+      } else {
+        RequestConversation r = new RequestConversation(requestID, username, userType);
+        dispose();
+        r.setVisible(true);
+      }
     } else {
       JOptionPane.showMessageDialog(null, "Please select a request");
     }
@@ -361,6 +369,7 @@ public final class DoctorView extends javax.swing.JFrame {
       java.awt.event.ActionEvent evt) { // TODO add your handling code here:
     viewedRequests.setText("Closed Requests");
     requestsList.setVisible(true);
+    isClosed = true;
     String element;
     String sql = "select Distinct Request.RID, Date, PUsername from Request, Message where Request.Status=? and Message.DUsername=?";
     // previous sql creating error for doctor not seeing ticket updated by patient

@@ -221,6 +221,7 @@ public final class PatientView extends javax.swing.JFrame {
       java.awt.event.ActionEvent evt) { // TODO add your handling code here:
     jLabel1.setText("Your Opened Requests");
     jList1.setVisible(true);
+    boolean isClosed = false;
     String element;
     String sql = "select RID,Date from Request where Status=? and PUsername=?";
     model.removeAllElements();
@@ -350,6 +351,12 @@ public final class PatientView extends javax.swing.JFrame {
       temp_requestID = temp_requestID.substring(0, 3);
       requestID = Integer.parseInt(temp_requestID);
       setRequestID(requestID);
+      try {
+        rs.close();
+        pst.close();
+      } catch (SQLException e) {
+        JOptionPane.showMessageDialog(null, e);
+      }
       if(isClosed){
         RequestClosedConversation r = new RequestClosedConversation(requestID, username, userType);
         dispose();
