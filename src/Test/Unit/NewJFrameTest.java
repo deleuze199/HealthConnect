@@ -1,10 +1,10 @@
-package Test;
+package Test.Unit;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class HealthTest {
+class NewJFrameTest {
 
   @org.junit.jupiter.api.Test
-  void main() {
+  void getUsername() {
   }
 }
