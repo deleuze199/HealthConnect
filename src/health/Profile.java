@@ -122,29 +122,37 @@ public class Profile extends javax.swing.JFrame {
     pack();
   }// </editor-fold>
 
-  private void makeRequestButtonActionPerformed(
+  public NewRequests makeRequestButtonActionPerformed(
       java.awt.event.ActionEvent evt) { // TODO add your handling code here:
     dispose();
     NewRequests n = new NewRequests(username);
     n.setVisible(true);
+    return n;
   }
 
-  private void viewRequestButtonActionPerformed(
+  public PatientView viewRequestButtonActionPerformed(
       java.awt.event.ActionEvent evt) { // TODO add your handling code here:
     dispose();
     PatientView p = new PatientView(username);
     p.setVisible(true);
+    return p;
   }
 
-  private void logoutActionPerformed(java.awt.event.ActionEvent evt) {
+  public NewJFrame logoutActionPerformed(java.awt.event.ActionEvent evt) {
 // TODO add your handling code here:
-    int pane = JOptionPane.showConfirmDialog(null, "Are you sure you want to logout?", "Logout",
-        JOptionPane.YES_NO_OPTION);
+    int pane = askToLogout();
     if (pane == 0) {
       dispose();
       NewJFrame n = new NewJFrame();
       n.setVisible(true);
+      return n;
+    } else {
+      return null;
     }
+  }
+  public int askToLogout() {
+    return JOptionPane.showConfirmDialog(null, "Are you sure you want to logout?", "Logout",
+        JOptionPane.YES_NO_OPTION);
   }
 
   /**
