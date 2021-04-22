@@ -18,21 +18,9 @@ public class Health {
     //Statement statement = null;
 
     try {
+      // Creates a connection to the database
       Class.forName("com.mysql.cj.jdbc.Driver");
       conn = DriverManager.getConnection(
-          "jdbc:mysql://localhost:3306/health", "root", "root");
-//JOptionPane.showMessageDialog (null, "Connected");
-//      Statement statement = conn.createStatement();
-/*      ResultSet hc = statement.executeQuery("select * from Patient");
-      while (hc.next()) {
-        System.out.println("Username = " + hc.getString("Username"));
-        System.out.println("Password = " + hc.getString("Password"));
-      }
-      hc = statement.executeQuery("select * from Doctor");
-      while (hc.next()) {
-        System.out.println("Username = " + hc.getString("Username"));
-        System.out.println("Password = " + hc.getString("Password"));
-      }*/
 //open login page
       NewJFrame s = new NewJFrame();
       s.setVisible(true);
