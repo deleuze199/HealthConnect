@@ -27,6 +27,7 @@ public class RequestConversation extends javax.swing.JFrame {
   PreparedStatement pst = null;
   String element;
   String timestamp;
+  int pane = 5;
 
   public RequestConversation() {
     //for testing purposes
@@ -256,9 +257,11 @@ public class RequestConversation extends javax.swing.JFrame {
 
   public void addButtonActionPerformed(java.awt.event.ActionEvent evt) {
 // TODO add your handling code here:
-    int pane = JOptionPane
-        .showConfirmDialog(null, "Are you sure you want to add your message to the request ? ",
-            " Add To Request", JOptionPane.YES_NO_OPTION);
+    if (pane == 5) {
+      pane = JOptionPane
+          .showConfirmDialog(null, "Are you sure you want to add your message to the request ? ",
+              " Add To Request", JOptionPane.YES_NO_OPTION);
+    }
     if (pane == 0) {
       Date date = new Date();
       timestamp = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(date);
@@ -266,14 +269,15 @@ public class RequestConversation extends javax.swing.JFrame {
       try {
         String finalString = addMessage(temp);
         updateMessageStatus();
-        updateGUIMessage(timestamp);
+        updateGUIMessage(finalString);
         updateMessageDUsername();
       } catch (SQLException | HeadlessException e) {
         JOptionPane.showMessageDialog(null, e);
       } finally {
-        closeResultAndStatment();
+        closeResultAndStatement();
       }
     }
+    pane = 5;
   }
 
   public String addMessage(String temp) throws SQLException {
@@ -322,7 +326,7 @@ public class RequestConversation extends javax.swing.JFrame {
     pst.execute();
   }
 
-  public void closeResultAndStatment() {
+  public void closeResultAndStatement() {
     try {
       rs.close();
       pst.close();
@@ -331,50 +335,35 @@ public class RequestConversation extends javax.swing.JFrame {
     }
   }
 
-  private void closeButtonActionPerformed(java.awt.event.ActionEvent evt) {
+  public void closeButtonActionPerformed(java.awt.event.ActionEvent evt) {
 // TODO add your handling code here:
-    int pane = JOptionPane.showConfirmDialog(null, "Are you sure you want to close the request?",
-        "Close Request", JOptionPane.YES_NO_OPTION);
+    if (pane == 5) {
+      int pane = JOptionPane.showConfirmDialog(null, "Are you sure you want to close the request?",
+          "Close Request", JOptionPane.YES_NO_OPTION);
+    }
     if (pane == 0) {
-      String sql = "update Request set Status='Closed' where RID =?";
       try {
-        pst = conn.prepareStatement(sql);
-        String temp = Integer.toString(requestNumber);
-        pst.setString(1, temp);
-        pst.execute();
-        JOptionPane.showMessageDialog(null, "Request has been closed.");
+        updateRequestStatus();
       } catch (SQLException | HeadlessException e) {
         JOptionPane.showMessageDialog(null, e);
       } finally {
-        try {
-          rs.close();
-          pst.close();
-        } catch (SQLException e) {
-          JOptionPane.showMessageDialog(null, e);
-        }
+        closeResultAndStatement();
       }
-      if ("Doctor".equals(userType)) {
-        NewJFrame n = new NewJFrame();
-        DoctorView d = new DoctorView(userID);
-        d.setVisible(true);
-        dispose();
-      } else {
-        NewJFrame n = new NewJFrame();
-        PatientView p = new PatientView(userID);
-        p.setVisible(true);
-        dispose();
-      }
+      leaveRequestPage();
     }
+    pane = 5;
   }
 
-  private void backButtonActionPerformed(
-      java.awt.event.ActionEvent evt) { // TODO add your handling code here:
-    try {
-      rs.close();
-      pst.close();
-    } catch (SQLException e) {
-      JOptionPane.showMessageDialog(null, e);
-    }
+  public void updateRequestStatus() throws SQLException {
+    String sql = "update Request set Status='Closed' where RID =?";
+    pst = conn.prepareStatement(sql);
+    String temp = Integer.toString(requestNumber);
+    pst.setString(1, temp);
+    pst.execute();
+    JOptionPane.showMessageDialog(null, "Request has been closed.");
+  }
+
+  public void leaveRequestPage() {
     if ("Doctor".equals(userType)) {
       NewJFrame n = new NewJFrame();
       DoctorView d = new DoctorView(userID);
@@ -386,6 +375,12 @@ public class RequestConversation extends javax.swing.JFrame {
       p.setVisible(true);
       dispose();
     }
+  }
+
+  public void backButtonActionPerformed(
+      java.awt.event.ActionEvent evt) { // TODO add your handling code here:
+    closeResultAndStatement();
+    leaveRequestPage();
   }
 
   /**
@@ -433,7 +428,7 @@ public class RequestConversation extends javax.swing.JFrame {
   private javax.swing.JScrollPane jScrollPane1;
   private javax.swing.JScrollPane jScrollPane2; // End of variables declaration
 
-  public void setAddToRequest(JTextArea addToRequest) {
-    this.addToRequest = addToRequest;
+  public void setPane(int pane) {
+    this.pane = pane;
   }
 }
