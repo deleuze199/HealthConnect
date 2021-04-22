@@ -21,6 +21,8 @@ public class Health {
       // Creates a connection to the database
       Class.forName("com.mysql.cj.jdbc.Driver");
       conn = DriverManager.getConnection(
+          "jdbc:mysql://localhost:3306/health", "root", "root");
+
 //open login page
       NewJFrame s = new NewJFrame();
       s.setVisible(true);
