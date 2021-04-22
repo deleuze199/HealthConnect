@@ -15,7 +15,6 @@ import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.swing.JOptionPane;
-import javax.swing.JTextArea;
 
 public class RequestConversation extends javax.swing.JFrame {
 
@@ -338,7 +337,7 @@ public class RequestConversation extends javax.swing.JFrame {
   public void closeButtonActionPerformed(java.awt.event.ActionEvent evt) {
 // TODO add your handling code here:
     if (pane == 5) {
-      int pane = JOptionPane.showConfirmDialog(null, "Are you sure you want to close the request?",
+      pane = JOptionPane.showConfirmDialog(null, "Are you sure you want to close the request?",
           "Close Request", JOptionPane.YES_NO_OPTION);
     }
     if (pane == 0) {

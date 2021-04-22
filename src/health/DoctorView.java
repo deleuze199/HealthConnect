@@ -300,9 +300,11 @@ public final class DoctorView extends javax.swing.JFrame {
     requestsList.setVisible(true);
     isClosed = false;
     String element;
-    String sql = "select distinct Request.RID, Date, PUsername from health.Request, health.Message where Request.Status=? and Message.DUsername=?";
+    String sql = "select distinct Request.RID, Date, PUsername from health.Request, "
+        + "health.Message where Request.Status=? and Message.DUsername=?";
     // previous sql creating error for doctor not seeing ticket closed by patient
-    //String sql = "select distinct Request.RID, Date, PUsername from health.Request, health.Message where Request.RID = Message.RID and Request.Status=? and Message.DUsername=?";
+    //old sQL = "select distinct Request.RID, Date, PUsername from health.Request,
+    // health.Message where Request.RID = Message.RID and Request.Status=? and Message.DUsername=?";
     model.removeAllElements();
     element = "RID        Date                                        Patient Username";
     model.addElement(element);
