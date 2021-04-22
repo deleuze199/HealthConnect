@@ -15,8 +15,10 @@ import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.swing.JOptionPane;
+import javax.swing.JTextArea;
 
 public class RequestConversation extends javax.swing.JFrame {
+
   int requestNumber;
   String userID;
   String userType;
@@ -24,6 +26,21 @@ public class RequestConversation extends javax.swing.JFrame {
   ResultSet rs = null;
   PreparedStatement pst = null;
   String element;
+  String timestamp;
+
+  public RequestConversation() {
+    //for testing purposes
+    initComponents();
+    try {
+      Class.forName("com.mysql.cj.jdbc.Driver");
+      conn = DriverManager.getConnection(
+          "jdbc:mysql://localhost:3306/health", "root", "root");
+//JOptionPane.showMessageDialog (null, "Connected");
+      Statement statement = conn.createStatement();
+    } catch (ClassNotFoundException | SQLException e) {
+      JOptionPane.showMessageDialog(null, e);
+    }
+  }
 
   /**
    * Creates new form RequestConversation * @param new_requestID
@@ -70,10 +87,10 @@ public class RequestConversation extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(null, "No message added");
       }
       if ("Doctor".equals(userType)) {
-        sql = "update Message set DUsername=? where RID =?";
-        pst = conn.prepareStatement(sql);
+        String sql2 = "update Message set DUsername=? where RID =?";
+        pst = conn.prepareStatement(sql2);
         pst.setString(1, userID);
-        pst.setString(2,temp);
+        pst.setString(2, temp);
         pst.execute();
       }
     } catch (HeadlessException | SQLException e) {
@@ -237,56 +254,81 @@ public class RequestConversation extends javax.swing.JFrame {
 
   }// </editor-fold>
 
-  private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {
+  public void addButtonActionPerformed(java.awt.event.ActionEvent evt) {
 // TODO add your handling code here:
     int pane = JOptionPane
         .showConfirmDialog(null, "Are you sure you want to add your message to the request ? ",
             " Add To Request", JOptionPane.YES_NO_OPTION);
     if (pane == 0) {
-      String sql = "insert into Message (RID, DUsername, TimeStamp, Message) values (?, ?, ?, ?)";
+      Date date = new Date();
+      timestamp = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(date);
+      String temp = Integer.toString(requestNumber);
       try {
-        pst = conn.prepareStatement(sql);
-        String temp = Integer.toString(requestNumber);
-        pst.setString(1, temp);
-        pst.setString(2, userID);
-        Date date = new Date();
-        String timestamp = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(date);
-        pst.setString(3, timestamp);
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("\n");
-        stringBuilder.append(addToRequest.getText());
-        stringBuilder.append("\n Added by ").append(userType).append(" ").append(userID);
-        String finalString = stringBuilder.toString();
-        pst.setString(4, finalString);
-        pst.execute();
-        JOptionPane.showMessageDialog(null, "Message added");
-        sql = "update Request set Status='In Progress' where RID =?";
-        pst = conn.prepareStatement(sql);
-        temp = Integer.toString(requestNumber);
-        pst.setString(1, temp);
-        pst.execute();
-        currentRequest.append("\n");
-        currentRequest.append(timestamp);
-        currentRequest.append("\n");
-        currentRequest.append(finalString);
-        addToRequest.setText("");
-        sql = "update Message set DUsername=? where RID =?";
-        pst = conn.prepareStatement(sql);
-        pst.setString(1, userID);
-        pst.setString(2, temp);
-        pst.execute();
+        String finalString = addMessage(temp);
+        updateMessageStatus();
+        updateGUIMessage(timestamp);
+        updateMessageDUsername();
       } catch (SQLException | HeadlessException e) {
         JOptionPane.showMessageDialog(null, e);
       } finally {
-        try {
-          rs.close();
-          pst.close();
-        } catch (SQLException e) {
-          JOptionPane.showMessageDialog(null, e);
-        }
+        closeResultAndStatment();
       }
     }
+  }
 
+  public String addMessage(String temp) throws SQLException {
+    Date date = new Date();
+    timestamp = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(date);
+    String sql = "insert into Message (RID, DUsername, TimeStamp, Message) values (?, ?, ?, ?)";
+    pst = conn.prepareStatement(sql);
+    pst.setString(1, temp);
+    pst.setString(2, userID);
+    pst.setString(3, timestamp);
+    StringBuilder stringBuilder = new StringBuilder();
+    stringBuilder.append("\n");
+    stringBuilder.append(addToRequest.getText());
+    stringBuilder.append("\n Added by ").append(userType).append(" ").append(userID);
+    String finalString = stringBuilder.toString();
+    pst.setString(4, finalString);
+    pst.execute();
+    JOptionPane.showMessageDialog(null, "Message added");
+    return finalString;
+  }
+
+  public void updateMessageStatus() throws SQLException {
+    String sql = "update Request set Status='In Progress' where RID =?";
+    pst = conn.prepareStatement(sql);
+    String temp = Integer.toString(requestNumber);
+    pst.setString(1, temp);
+    pst.execute();
+  }
+
+  public void updateGUIMessage(String finalString) {
+    Date date = new Date();
+    timestamp = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(date);
+    currentRequest.append("\n");
+    currentRequest.append(timestamp);
+    currentRequest.append("\n");
+    currentRequest.append(finalString);
+    addToRequest.setText("");
+  }
+
+  public void updateMessageDUsername() throws SQLException {
+    String temp = Integer.toString(requestNumber);
+    String sql = "update Message set DUsername=? where RID =?";
+    pst = conn.prepareStatement(sql);
+    pst.setString(1, userID);
+    pst.setString(2, temp);
+    pst.execute();
+  }
+
+  public void closeResultAndStatment() {
+    try {
+      rs.close();
+      pst.close();
+    } catch (SQLException e) {
+      JOptionPane.showMessageDialog(null, e);
+    }
   }
 
   private void closeButtonActionPerformed(java.awt.event.ActionEvent evt) {
@@ -390,4 +432,8 @@ public class RequestConversation extends javax.swing.JFrame {
   private javax.swing.JLabel jLabel7;
   private javax.swing.JScrollPane jScrollPane1;
   private javax.swing.JScrollPane jScrollPane2; // End of variables declaration
+
+  public void setAddToRequest(JTextArea addToRequest) {
+    this.addToRequest = addToRequest;
+  }
 }
