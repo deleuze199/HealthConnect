@@ -13,6 +13,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
+import javax.swing.JButton;
+import javax.swing.JList;
 
 public final class PatientView extends javax.swing.JFrame {
 
@@ -415,4 +417,29 @@ public final class PatientView extends javax.swing.JFrame {
   private javax.swing.JButton newButton;
   private javax.swing.JButton openRequest;
 // End of variables declaration
+//Creating Method that return a button click or list for unit testing
+
+  public JButton getBackButton() {
+    return backButton;
+  }
+
+  public JButton getClosedButton() {
+    return closedButton;
+  }
+
+  public JButton getInProgressButton() {
+    return InProgressButton;
+  }
+
+  public JButton getNewButton() {
+    return newButton;
+  }
+
+  public JButton getOpenRequest() {
+    return openRequest;
+  }
+
+  public JList getjList1() {
+    return jList1;
+  }
 }
